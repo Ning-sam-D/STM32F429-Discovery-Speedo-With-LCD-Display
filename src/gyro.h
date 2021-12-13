@@ -19,5 +19,13 @@
 void gyro_setup();
 int read_register(int address);
 void write_register(int address, int data);
-void read_data(float &x, float &y, float &z);
+
+void read_data();
+
+float read_data_x();
+float read_data_y();
+float read_data_z();
+
+// float* read_data_array();
+
 #endif

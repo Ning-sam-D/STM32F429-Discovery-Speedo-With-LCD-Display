@@ -4,6 +4,8 @@
 SPI gyro_spi(PF_9, PF_8, PF_7); // MOSI, MISO, SCK
 DigitalOut gyro_cs(PC_1);
 
+float array[3] = {0,0,0};
+
 void write_register(int address, int data)
 {
     gyro_cs = 0;
@@ -32,7 +34,8 @@ void gyro_setup()
     write_register(GYRO_CTRL_REG5, 0x08); // set up low pass filter
 }
 
-void read_data(float &x, float &y, float &z)
+
+void read_data()
 {
     int X_L = read_register(GYRO_X_L);
     int X_H = read_register(GYRO_X_H);
@@ -46,16 +49,34 @@ void read_data(float &x, float &y, float &z)
     int Z_H = read_register(GYRO_Z_H);
     int16_t reading_Z = (Z_H << 8) | (Z_L);
 
-    x = (float) (reading_X / 1000 * 8.75);
-    y = (float) (reading_Y / 1000 * 8.75);
-    z = (float) (reading_Z / 1000 * 8.75);
-
-    // int x = (int) (reading_X / 1000 * 8.75);
-    // int y = (int) (reading_Y / 1000 * 8.75);
-    // int z = (int) (reading_Z / 1000 * 8.75);
+    int x = (float) (reading_X / 1000 * 8.75);
+    int y = (float) (reading_Y / 1000 * 8.75);
+    int z = (float) (reading_Z / 1000 * 8.75);
 
     printf("%d, %d, %d\n", x, y, z);
-    // printf("%3.2f, %3.2f, %3.2f\n", x, y, z);
-    // printf("0x%X, 0x%X, 0x%X\n", reading_X, reading_Y, reading_Z);
 }
 
+
+float read_data_x(){
+    int X_L = read_register(GYRO_X_L);
+    int X_H = read_register(GYRO_X_H);
+    int16_t reading_X = (X_H << 8) | (X_L);
+    float x = reading_X * 8.75 / 1000;
+    return (float) (reading_X * 8.75 / 1000);
+}
+
+float read_data_y(){
+    int Y_L = read_register(GYRO_Y_L);
+    int Y_H = read_register(GYRO_Y_H);
+    int16_t reading_Y = (Y_H << 8) | (Y_L);
+    float y = reading_Y * 8.75 / 1000;
+    return (float) (reading_Y * 8.75 / 1000);
+}
+
+float read_data_z(){
+    int Z_L = read_register(GYRO_Z_L);
+    int Z_H = read_register(GYRO_Z_H);
+    int16_t reading_Z = (Z_H << 8) | (Z_L);
+    float z = reading_Z * 8.75 / 1000;
+    return (float) (reading_Z * 8.75 / 1000);
+}
