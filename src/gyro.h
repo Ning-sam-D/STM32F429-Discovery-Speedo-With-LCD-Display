@@ -25,6 +25,7 @@ void read_data();
 float read_data_x();
 float read_data_y();
 float read_data_z();
+float sum_of_degree();
 
 // float* read_data_array();
 
