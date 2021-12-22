@@ -1,23 +1,26 @@
 #include <mbed.h>
 #include <stdio.h>
 #include "gyro.h"
-/*----- uncomment this -----*/
-// #include "SPI_TFT_ILI9341.h"
-// #include "Arial12x12.h"
-// SPI_TFT_ILI9341 TFT(PF_9, PF_9, PF_7, PC_2, PE_5, PE_5);
-/*----- uncomment end -----*/
+#include "SPI_TFT_ILI9341.h"
+#include "Arial12x12.h"
 
-InterruptIn button(USER_BUTTON);
+InterruptIn button(BUTTON1);
 volatile bool startOrPause = false;
+float distance_traveled = 0;
+SPI_TFT_ILI9341 TFT(PF_9, PF_8, PF_7, PC_2, PC_12, PD_13); // mosi, miso, sclk, cs, reset, dc
+
+int lcd_x = 0;
+int lcd_y = 0;
 
 void onOff()
 {
 	if (startOrPause)
-	{
 		startOrPause = false;
+	else
+	{	
 		distance_traveled = 0;
-	}
-	else startOrPause = true;
+		startOrPause = true;
+	} 
 }
 
 // counting how many peaks are in a cycle
@@ -34,23 +37,21 @@ float degree_to_velocity(float leg_length, float sum)
 	return distance;
 }
 
-float distance_traveled = 0;
-
 int main()
 {
-	/*----- uncomment this -----*/
-	// TFT.claim(stdout);      // send stdout to the TFT display 
-    // //TFT.claim(stderr);      // send stderr to the TFT display
-    // TFT.background(Black);    // set background to black
-    // TFT.foreground(White);    // set chars to white
-    // TFT.cls();                // clear the screen
-    // TFT.set_font((unsigned char*) Arial12x12);  // select the font
-    // TFT.set_orientation(0);
-    // printf("  Hello Mbed 0");
-	/*----- uncomment end -----*/
-
+	TFT.claim(stdout);      // send stdout to the TFT display 
+    //TFT.claim(stderr);      // send stderr to the TFT display
+    TFT.background(Black);    // set background to black
+    TFT.foreground(White);    // set chars to white
+    TFT.cls();                // clear the screen
+    TFT.set_font((unsigned char*) Arial12x12);  // select the font
+    TFT.set_orientation(0);
+	// TFT.locate(0,0);
+    // TFT.printf("Hello Mbed 0");
 
 	gyro_setup();
+
+	button.rise(&onOff);
 
 	while (1)
 	{
@@ -59,7 +60,13 @@ int main()
 			int sum = sum_of_degree();
 			float len = degree_to_velocity(1.2, sum); // setup leg length
 			distance_traveled += len * 0.5;
-			printf("Speed: %d cm/s, Distance: %d cm\n", (int)(100 * len), (int)(100 * distance_traveled));
+			if ((lcd_y + 13) < 320)
+			{
+				TFT.locate(0,lcd_y);
+    			TFT.printf(" Speed: %d cm/s", (int)(100 * len));
+				lcd_y = lcd_y + 13;
+			}
+			// printf("Speed: %d cm/s, Distance: %d cm\n", (int)(100 * len), (int)(100 * distance_traveled));
     	}
   	}
 }
