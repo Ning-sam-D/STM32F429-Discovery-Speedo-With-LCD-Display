@@ -12,10 +12,12 @@ volatile bool startOrPause = false;
 
 void onOff()
 {
-  if (startOrPause)
-    startOrPause = false;
-  else
-    startOrPause = true;
+	if (startOrPause)
+	{
+		startOrPause = false;
+		distance_traveled = 0;
+	}
+	else startOrPause = true;
 }
 
 // counting how many peaks are in a cycle
