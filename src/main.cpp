@@ -16,7 +16,7 @@ SPI_TFT_ILI9341 TFT(PF_9, PF_8, PF_7, PC_2, PC_12, PD_13); // mosi, miso, sclk, 
 EventQueue *queue = mbed_event_queue();
 // global variable for location on screen 
 int lcd_x = 0;
-int lcd_y = 0;
+int lcd_y = 1;
 
 void lcd_setup()
 {
@@ -43,7 +43,7 @@ void onOff()
 		startOrPause = true;
 
 		lcd_x = 0;
-		lcd_y = 0;
+		lcd_y = 11;
 	}
 }
 
@@ -97,7 +97,7 @@ int main()
 				if (lcd_y >= 299 || (entry_count == 20))
 				{
 					lcd_x = 120;
-					lcd_y = 0;
+					lcd_y = 10;
 				}
 			}
 		}
