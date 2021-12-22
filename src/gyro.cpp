@@ -1,10 +1,9 @@
 #include <mbed.h>
 #include "gyro.h"
 #include <math.h>
+
 SPI gyro_spi(PF_9, PF_8, PF_7); // MOSI, MISO, SCK
 DigitalOut gyro_cs(PC_1);
-
-float array[3] = {0, 0, 0};
 
 void write_register(int address, int data)
 {
@@ -60,7 +59,7 @@ float read_data_x()
     int X_L = read_register(GYRO_X_L);
     int X_H = read_register(GYRO_X_H);
     int16_t reading_X = (X_H << 8) | (X_L);
-    float x = reading_X * 8.75 / 1000;
+    // float x = reading_X * 8.75 / 1000;
     return (float)(reading_X * 8.75 / 1000);
 }
 
@@ -69,7 +68,7 @@ float read_data_y()
     int Y_L = read_register(GYRO_Y_L);
     int Y_H = read_register(GYRO_Y_H);
     int16_t reading_Y = (Y_H << 8) | (Y_L);
-    float y = reading_Y * 8.75 / 1000;
+    // float y = reading_Y * 8.75 / 1000;
     return (float)(reading_Y * 8.75 / 1000);
 }
 
@@ -78,7 +77,7 @@ float read_data_z()
     int Z_L = read_register(GYRO_Z_L);
     int Z_H = read_register(GYRO_Z_H);
     int16_t reading_Z = (Z_H << 8) | (Z_L);
-    float z = reading_Z * 8.75 / 1000;
+    // float z = reading_Z * 8.75 / 1000;
     return (float)(reading_Z * 8.75 / 1000);
 }
 

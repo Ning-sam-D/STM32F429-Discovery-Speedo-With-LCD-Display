@@ -2,6 +2,7 @@
     "files.associations": {
         "cmath": "cpp",
         "random": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "stm32f4xx.h": "c"
     }
 }
