@@ -7,6 +7,17 @@
 // SPI_TFT_ILI9341 TFT(PF_9, PF_9, PF_7, PC_2, PE_5, PE_5);
 /*----- uncomment end -----*/
 
+InterruptIn button(USER_BUTTON);
+volatile bool startOrPause = false;
+
+void onOff()
+{
+  if (startOrPause)
+    startOrPause = false;
+  else
+    startOrPause = true;
+}
+
 // counting how many peaks are in a cycle
 // storing the average peak value.
 float degree_to_velocity(float leg_length, float sum)
@@ -41,9 +52,12 @@ int main()
 
 	while (1)
 	{
-		int sum = sum_of_degree();
-		float len = degree_to_velocity(1.2, sum); // setup leg length
-		distance_traveled += len * 0.5;
-		printf("Speed: %d cm/s, Distance: %d cm\n", (int)(100 * len), (int)(100*distance_traveled));
-	}
+		if (startOrPause)
+		{
+			int sum = sum_of_degree();
+			float len = degree_to_velocity(1.2, sum); // setup leg length
+			distance_traveled += len * 0.5;
+			printf("Speed: %d cm/s, Distance: %d cm\n", (int)(100 * len), (int)(100 * distance_traveled));
+    	}
+  	}
 }
