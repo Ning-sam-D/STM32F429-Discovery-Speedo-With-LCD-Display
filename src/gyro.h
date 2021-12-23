@@ -17,16 +17,14 @@
 #define GYRO_Z_H 0x2D
 
 void gyro_setup();
-int read_register(int address);
+
+int  read_register(int address);
 void write_register(int address, int data);
 
 void read_data();
-
 float read_data_x();
 float read_data_y();
 float read_data_z();
 float sum_of_degree();
-
-// float* read_data_array();
 
 #endif

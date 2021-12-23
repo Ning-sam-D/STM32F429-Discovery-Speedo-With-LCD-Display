@@ -5,6 +5,7 @@
 SPI gyro_spi(PF_9, PF_8, PF_7); // MOSI, MISO, SCK
 DigitalOut gyro_cs(PC_1);
 
+// Write data to register on the Gyro
 void write_register(int address, int data)
 {
     gyro_cs = 0;
@@ -13,6 +14,7 @@ void write_register(int address, int data)
     gyro_cs = 1;
 }
 
+// Read data from register on the Gyro
 int read_register(int address)
 {
     gyro_cs = 0;
@@ -22,6 +24,7 @@ int read_register(int address)
     return data;
 }
 
+// Gyro Initialization
 void gyro_setup()
 {
     gyro_cs = 1;
@@ -33,6 +36,7 @@ void gyro_setup()
     write_register(GYRO_CTRL_REG5, 0x08); // set up low pass filter
 }
 
+// Read all Gyro speed and print on terminal
 void read_data()
 {
     int X_L = read_register(GYRO_X_L);
@@ -54,6 +58,7 @@ void read_data()
     printf("%d, %d, %d\n", x, y, z);
 }
 
+// Read only X-axis gyro data
 float read_data_x()
 {
     int X_L = read_register(GYRO_X_L);
@@ -63,6 +68,7 @@ float read_data_x()
     return (float)(reading_X * 8.75 / 1000);
 }
 
+// Read only Y-axis gyro data
 float read_data_y()
 {
     int Y_L = read_register(GYRO_Y_L);
@@ -72,6 +78,7 @@ float read_data_y()
     return (float)(reading_Y * 8.75 / 1000);
 }
 
+// Read only Z-axis gyro data
 float read_data_z()
 {
     int Z_L = read_register(GYRO_Z_L);
@@ -81,6 +88,7 @@ float read_data_z()
     return (float)(reading_Z * 8.75 / 1000);
 }
 
+// Calculate sum of X-axis angluar velocity
 float sum_of_degree()
 {
     float sum = 0;
